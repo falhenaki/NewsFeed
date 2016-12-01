@@ -1,0 +1,70 @@
+<html>
+<head>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script src="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.js"
+type="text/javascript"></script>
+
+<style type="text/css">
+@import url("http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.css");
+
+#feedControl {
+margin-top : 10px;
+margin-left: auto;
+margin-right: auto;
+width : 440px;
+font-size: 12px;
+color: #9CADD0;
+}
+</style>
+    <script type='text/javascript'>
+	  var url = '';
+      var handleSelectionChange = function() {
+        // store the radio buttons as an array
+        const buttons = Array.from(document.querySelectorAll('input'));
+        // find the button that is checked and get its value
+        const channel = buttons.find(function(button) {
+          return button.checked;
+        }).value;
+        url = `${channel}`;
+		console.log(url);
+		load("feeds", "1");
+
+      };
+      var init = function() {
+        // connect the change of event of the form to the method
+        document.querySelector('form').addEventListener('change',
+            handleSelectionChange);
+        
+        handleSelectionChange(); // call the method to simulate the first
+                                 // selection
+      };
+      // call init when the page has loaded
+      window.onload = init;
+
+    </script>
+<script type="text/javascript">
+function load() {
+console.log('its heeere' + url);
+var feed ="http://feeds.bbci.co.uk/news/" + url + "/rss.xml";
+console.log(feed);
+new GFdynamicFeedControl(feed, "feedControl");
+
+}
+google.load("feeds", "1");
+google.setOnLoadCallback(load);
+</script>
+</head>
+<body>
+    <form>
+      <input type='radio' name='news' value='world' checked /> World <br />
+      <input type='radio' name='news' value='uk' /> UK <br />
+      <input type='radio' name='news' value='technology' /> Technology <br />
+      <input type='radio' name='news' value='business' /> Business <br />
+    </form>
+
+    <div id='content' />
+	<div id="body">
+	<div id="feedControl">Loading...</div>
+</div>
+</body>
+</html>
