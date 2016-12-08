@@ -2,7 +2,8 @@
 <head>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script src="http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.js"
-type="text/javascript"></script>
+
+<script type="text/javascript" language="javascript" src="login.js"></script>
 
 <style type="text/css">
 @import url("http://www.google.com/uds/solutions/dynamicfeed/gfdynamicfeedcontrol.css");
@@ -16,6 +17,7 @@ font-size: 12px;
 color: #9CADD0;
 }
 </style>
+
     <script type='text/javascript'>
 	  var url = '';
       var handleSelectionChange = function() {
@@ -43,6 +45,7 @@ color: #9CADD0;
 
     </script>
 <script type="text/javascript">
+src="gfdynamicfeedcontrol.js"
 function load() {
 console.log('its heeere' + url);
 var feed ="http://feeds.bbci.co.uk/news/" + url + "/rss.xml";
@@ -53,8 +56,42 @@ new GFdynamicFeedControl(feed, "feedControl");
 google.load("feeds", "1");
 google.setOnLoadCallback(load);
 </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+   $(document).ready(function(){
+   var xml;
+   var valid = false;
+  $('#b1').click(function(){
+       $.get('users.xml', null, function (data, textStatus) {
+           xml=data;
+            $(xml).find('details').each( function(){
+                var item = $(this);
+
+                if(item.find('username').text()==$('#userid').val() && item.find('password').text()==$('#pwd').val())
+                {
+					valid = true;
+                    window.open('success.html');
+                }
+				
+           });
+		   if (!valid){
+				alert("you entered invalid credentials");
+		   }
+        });
+    });
+});
+    </script>
 </head>
 <body>
+<div align="middle">
+<h2> Login/Register </h2>
+Username: &nbsp <input type="text" id="userid" name="userid"/><br><br>
+Password:  &nbsp  <input type="password" id="pwd" name="paasword"/><br><br>
+<input type="button" id="b1" value="Login"/>
+<input type="reset" value="Cancel"/>
+</div>
+	   <script type="text/javascript" language="javascript" src="login.js"></script>
     <form>
       <input type='radio' name='news' value='world' checked /> World <br />
       <input type='radio' name='news' value='uk' /> UK <br />
