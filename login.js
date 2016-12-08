@@ -1,12 +1,8 @@
 (function() {
-    var startingTime = new Date().getTime();
-    // Load the script
     var script = document.createElement("SCRIPT");
     script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
     script.type = 'text/javascript';
     document.getElementsByTagName("head")[0].appendChild(script);
-
-
 });
 
 function xmlToString(xmlData) {
@@ -59,6 +55,7 @@ $(document).ready(function() {
                     document.getElementById("news").style.display = "block";
                     document.getElementById("feedControl").style.display = "block";
                     document.getElementById("form1").remove();
+					document.getElementById("form2").remove();
                     //console.log(xml);
                     var shitty = xmlToString(xml);
                     console.log('this is it' + typeof theusername);
@@ -88,6 +85,43 @@ $(document).ready(function() {
             if (!valid) {
                 alert("you entered invalid credentials");
             }
+        });
+    });
+});
+
+$(document).ready(function() {
+    //document.getElementById("news").style.visibility = "block";
+    // document.getElementById("login-form").style.visibility = "hidden"; 
+
+    // document.getElementById("news").remove();
+    var xml;
+    var valid = false;
+    $('#b2').click(function() {
+        $.get('users.xml', null, function(data, textStatus) {
+            xml = data;
+			var registrar = $('#ruserid').val();
+		    var rpassword = $('#rpwd').val();
+			console.log(registrar);
+            $(xml).find('details').each(function() {
+                var item = $(this);
+				console.log('user:' + registrar + ' pass' + rpassword);
+                if (item.find('username').text() == registrar) {
+					valid = true;
+					alert("the username you entered is already registered.");
+					return;
+                }			
+            });
+	        $.ajax({
+					type: "POST",
+                    url: 'register.php',
+                    data: ({registrar: registrar,rpassword: rpassword}),
+                    success: function(data) {
+                        console.log("first" + data);                        
+                    },
+                    error: function(data) {
+                        console.log("!!!!1!!!!" + data);
+                    }
+                });	
         });
     });
 });
