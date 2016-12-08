@@ -1,39 +1,42 @@
-// Name and Password from the register-form
-var username = document.getElementById('username');
-var password = document.getElementById('password');
-//document.getElementById("container").style.display="none";
-// storing input from register-form
-function store() {
-
+Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
 }
-
-// check if stored data from register-form is equal to entered data in the   login-form
-function check() {
-
-    // stored data from the register-form
-    var storedName = localStorage.getItem('username');
-    var storedpassword = localStorage.getItem('password');
-
-    // entered data from the login-form
-    var username = document.getElementById('username');
-    var password = document.getElementById('password');
-
-    // check if stored data from register-form is equal to data from login form
-    if(username.value == storedName && password.value == storedpassword) {
-       // alert("hi");
-        //window.location.href = "user.html";
-        //document.getElementById("container").style.visibility="visible";
-		console.log('loggedin');
-		alert('you have been loggedin');
-		document.getElementById("login-form").style.visibility = "hidden"; 
-        
-    }else {
-		alert('you have been registered');
-       // document.getElementById("container").style.display="none";
-		localStorage.setItem('username', username.value);
-		localStorage.setItem('password', password.value);
-        //alert('registerd.');
-		console.log(username.value);
-		console.log(password.value);
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = this.length - 1; i >= 0; i--) {
+        if(this[i] && this[i].parentElement) {
+            this[i].parentElement.removeChild(this[i]);
+        }
     }
 }
+   $(document).ready(function(){
+  //document.getElementById("news").style.visibility = "block";
+ // document.getElementById("login-form").style.visibility = "hidden"; 
+
+  // document.getElementById("news").remove();
+   var xml;
+   var valid = false;
+  $('#b1').click(function(){
+       $.get('users.xml', null, function (data, textStatus) {
+           xml=data;
+            $(xml).find('details').each( function(){
+                var item = $(this);
+
+                if(item.find('username').text()==$('#userid').val() && item.find('password').text()==$('#pwd').val())
+                {
+					valid = true;
+					$("p").append("Hello, welcome " + $('#userid').val() + " we missed you");
+					console.log(document.getElementById("news"));
+					document.getElementById("news").style.display = "block"; 
+					document.getElementById("feedControl").style.display = "block"; 
+					document.getElementById("form1").remove();
+					console.log(xml);
+                    //window.open('success.html');
+                }
+				
+           });
+		   if (!valid){
+				alert("you entered invalid credentials");
+		   }
+        });
+    });
+});

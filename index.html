@@ -56,43 +56,26 @@ new GFdynamicFeedControl(feed, "feedControl");
 google.load("feeds", "1");
 google.setOnLoadCallback(load);
 </script>
+
+<script></script src="login.js">
+</script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
-<script>
-   $(document).ready(function(){
-   var xml;
-   var valid = false;
-  $('#b1').click(function(){
-       $.get('users.xml', null, function (data, textStatus) {
-           xml=data;
-            $(xml).find('details').each( function(){
-                var item = $(this);
-
-                if(item.find('username').text()==$('#userid').val() && item.find('password').text()==$('#pwd').val())
-                {
-					valid = true;
-                    window.open('success.html');
-                }
-				
-           });
-		   if (!valid){
-				alert("you entered invalid credentials");
-		   }
-        });
-    });
-});
-    </script>
 </head>
 <body>
 <div align="middle">
+
+<form id="form1">
 <h2> Login/Register </h2>
 Username: &nbsp <input type="text" id="userid" name="userid"/><br><br>
 Password:  &nbsp  <input type="password" id="pwd" name="paasword"/><br><br>
 <input type="button" id="b1" value="Login"/>
 <input type="reset" value="Cancel"/>
+</form>
+<p></p>
 </div>
-	   <script type="text/javascript" language="javascript" src="login.js"></script>
-    <form>
+	   <script type="text/javascript" language="javascript" src="login.js" ></script>
+    <form id="news" style ="display: none;">
       <input type='radio' name='news' value='world' checked /> World <br />
       <input type='radio' name='news' value='uk' /> UK <br />
       <input type='radio' name='news' value='technology' /> Technology <br />
@@ -101,7 +84,7 @@ Password:  &nbsp  <input type="password" id="pwd" name="paasword"/><br><br>
 
     <div id='content' />
 	<div id="body">
-	<div id="feedControl">Loading...</div>
+	<div style ="display: none;" id="feedControl">Loading...</div>
 </div>
 </body>
 </html>
