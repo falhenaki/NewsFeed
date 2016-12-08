@@ -1,42 +1,93 @@
+(function() {
+    var startingTime = new Date().getTime();
+    // Load the script
+    var script = document.createElement("SCRIPT");
+    script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+    script.type = 'text/javascript';
+    document.getElementsByTagName("head")[0].appendChild(script);
+
+
+});
+
+function xmlToString(xmlData) {
+
+    var xmlString;
+    //IE
+    if (window.ActiveXObject) {
+        xmlString = xmlData.xml;
+    }
+    // code for Mozilla, Firefox, Opera, etc.
+    else {
+        xmlString = (new XMLSerializer()).serializeToString(xmlData);
+    }
+    return xmlString;
+}
+
 Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
 }
 NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
-    for(var i = this.length - 1; i >= 0; i--) {
-        if(this[i] && this[i].parentElement) {
+    for (var i = this.length - 1; i >= 0; i--) {
+        if (this[i] && this[i].parentElement) {
             this[i].parentElement.removeChild(this[i]);
         }
     }
 }
-   $(document).ready(function(){
-  //document.getElementById("news").style.visibility = "block";
- // document.getElementById("login-form").style.visibility = "hidden"; 
+$(document).ready(function() {
+    //document.getElementById("news").style.visibility = "block";
+    // document.getElementById("login-form").style.visibility = "hidden"; 
 
-  // document.getElementById("news").remove();
-   var xml;
-   var valid = false;
-  $('#b1').click(function(){
-       $.get('users.xml', null, function (data, textStatus) {
-           xml=data;
-            $(xml).find('details').each( function(){
+    // document.getElementById("news").remove();
+    var xml;
+    var valid = false;
+    $('#b1').click(function() {
+        $.get('users.xml', null, function(data, textStatus) {
+            xml = data;
+            //   alert(xmlToString(xml));
+            $(xml).find('details').each(function() {
                 var item = $(this);
-
-                if(item.find('username').text()==$('#userid').val() && item.find('password').text()==$('#pwd').val())
-                {
-					valid = true;
-					$("p").append("Hello, welcome " + $('#userid').val() + " we missed you");
-					console.log(document.getElementById("news"));
-					document.getElementById("news").style.display = "block"; 
-					document.getElementById("feedControl").style.display = "block"; 
-					document.getElementById("form1").remove();
-					console.log(xml);
+                var theusername = $('#userid').val();
+                if (item.find('username').text() == theusername && item.find('password').text() == $('#pwd').val()) {
+                    valid = true;
+					var visit = " this seems to be your first visit";
+					if(item.find('lastseen').text() != "" || item.find('lastseen').text() == null){
+						visit = "Your last login date/time is" + item.find('lastseen').text();
+					}
+					
+                    $("p").append("Hello, welcome " + $('#userid').val() + visit);
+                    //console.log(document.getElementById("news"));
+                    document.getElementById("news").style.display = "block";
+                    document.getElementById("feedControl").style.display = "block";
+                    document.getElementById("form1").remove();
+                    //console.log(xml);
+                    var shitty = xmlToString(xml);
+                    console.log('this is it' + typeof theusername);
+                    //var val1 = xml.val();
+                    //console.log(val1);
+                    $.ajax({
+                        type: "POST",
+                        url: 'add.php',
+                        data: ({
+                            uuser: theusername
+                        }),
+                        //data: ({myxml:shitty}),
+                        success: function(data) {
+                            console.log("first" + data);
+                           
+                            //console.log(data);
+                        },
+                        error: function(data) {
+                            console.log("!!!!1!!!!" + data);
+                        }
+                    });
+					
                     //window.open('success.html');
                 }
-				
-           });
-		   if (!valid){
-				alert("you entered invalid credentials");
-		   }
+
+            });
+            if (!valid) {
+                alert("you entered invalid credentials");
+            }
         });
     });
 });
