@@ -56,43 +56,63 @@ new GFdynamicFeedControl(feed, "feedControl");
 google.load("feeds", "1");
 google.setOnLoadCallback(load);
 </script>
-
-<script></script src="login.js">
-</script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
 </script>
+<script>
+
+   $(document).ready(function(){
+   document.getElementById("news").style.visibility = "hidden";
+   var xml;
+   var valid = false;
+  $('#b1').click(function(){
+       $.get('users.xml', null, function (data, textStatus) {
+           xml=data;
+            $(xml).find('details').each( function(){
+                var item = $(this);
+
+                if(item.find('username').text()==$('#userid').val() && item.find('password').text()==$('#pwd').val())
+                {
+					valid = true;
+					$("p").append("Hello, welcome " + $('#userid').val() + " we missed you");
+					document.getElementById("form1").style.visibility = "hidden";
+
+                   // window.open('success.html');
+                }
+				
+           });
+		   if (!valid){
+				register();
+				alert("you entered invalid credentials");
+		   }
+        });
+    });
+});
+    </script>
 </head>
 <body>
 <div align="middle">
 
-<form id="form1">
-<h2> Login </h2>
+<form id="form1" >
+<h2> Login/Register </h2>
 Username: &nbsp <input type="text" id="userid" name="userid"/><br><br>
-Password:  &nbsp  <input type="password" id="pwd" name="password"/><br><br>
+Password:  &nbsp  <input type="password" id="pwd" name="paasword"/><br><br>
 <input type="button" id="b1" value="Login"/>
 <input type="reset" value="Cancel"/>
 </form>
-<form id="form2">
-<h2> Register </h2>
-Username: &nbsp <input type="text" id="ruserid" name="userid"/><br><br>
-Password:  &nbsp  <input type="password" id="rpwd" name="password"/><br><br>
-<input type="button" id="b2" value="Register"/>
-<input type="reset" value="Cancel"/>
-</form>
-<p></p>
 </div>
-	   <script type="text/javascript" language="javascript" src="login.js" ></script>
-    <form id="news" style ="display: none;">
+<div> <div/>
+<center><h3><p></p></h3>
+	   <script type="text/javascript" language="javascript" src="login.js" id = "news" ></script>
+    <form>
       <input type='radio' name='news' value='world' checked /> World <br />
       <input type='radio' name='news' value='uk' /> UK <br />
       <input type='radio' name='news' value='technology' /> Technology <br />
       <input type='radio' name='news' value='business' /> Business <br />
     </form>
-
+</center>
     <div id='content' />
 	<div id="body">
-	<div style ="display: none;" id="feedControl">Loading...</div>
+	<div id="feedControl">Loading...</div>
 </div>
-<a id='logout' style ="display: none;" href="index.html">Logout</a>
 </body>
 </html>

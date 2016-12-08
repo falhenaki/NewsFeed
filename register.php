@@ -13,12 +13,13 @@ $rpassword = $_POST['rpassword'];
 $xml = simplexml_load_file("users.xml");
 $sxe = new SimpleXMLElement($xml->asXML());
 $newItem = $sxe->addChild("details");
-$newItem->addChild("username", 'user5');
-$newItem->addChild("password", 'pass5');
-
+$newItem->addChild("username", $registrar);
+$newItem->addChild("password", $rpassword);
+header("Content-type: text/xml");
 $sxe->asXML("users.xml"); 
 
-/*$xmlstr = "<?xml version='1.0' standalone='yes'?> <details> <username>". $registrar. "</username> <password>". $rpassword ."</password> <lastseen></lastseen> </details>";
+
+/*$xmlstr = "header('Content-type:text/xml'); <details> <username>". $registrar. "</username> <password>". $rpassword ."</password> <lastseen></lastseen> </details>";
 */
 //$xml=simplexml_load_file("users.xml");
 //echo 'this is the user ' .$registrar . " \n and this is the password " .  $rpassword;
@@ -97,4 +98,5 @@ foreach ($xml->children() as $second_gen) {
 //echo $xml->asXML();
 // Store new XML code in questions.xml
 //$xml->asXML("questions.xml");
+
 ?>

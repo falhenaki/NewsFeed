@@ -54,6 +54,7 @@ $(document).ready(function() {
                     //console.log(document.getElementById("news"));
                     document.getElementById("news").style.display = "block";
                     document.getElementById("feedControl").style.display = "block";
+					document.getElementById("logout").style.display = "block";
                     document.getElementById("form1").remove();
 					document.getElementById("form2").remove();
                     //console.log(xml);
@@ -116,12 +117,15 @@ $(document).ready(function() {
                     url: 'register.php',
                     data: ({registrar: registrar,rpassword: rpassword}),
                     success: function(data) {
-                        console.log("first" + data);                        
+                        console.log("first" + data);  
+						document.getElementById("form2").remove();
+						alert("you've been registered, please login. Incase of a failure you may use user 'user1' 'pass1'");
                     },
                     error: function(data) {
-                        console.log("!!!!1!!!!" + data);
+						alert("Failure, contact admin or you may use user 'user1' 'pass1'");
                     }
-                });	
+                });
+	
         });
     });
 });
